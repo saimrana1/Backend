@@ -13,10 +13,20 @@ function requiredString(name: string, fallback?: string): string {
   return v;
 }
 
+function boolEnv(name: string, defaultValue: boolean): boolean {
+  const v = process.env[name];
+  if (v === undefined || v === '') return defaultValue;
+  return v === '1' || v.toLowerCase() === 'true' || v.toLowerCase() === 'yes';
+}
+
 export const env = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
   port: Number(process.env.PORT ?? 5000),
   mongodbUri: requiredString('MONGODB_URI', 'mongodb://127.0.0.1:27017/cms_admin'),
   adminApiKey: optionalString('ADMIN_API_KEY'),
+  /** HS256 secret for CMS login JWT. Required in production. */
+  jwtSecret: requiredString('JWT_SECRET', 'dev-jwt-secret-change-me'),
+  /** When false, POST /api/v1/auth/register returns 403. */
+  authSignupEnabled: boolEnv('AUTH_SIGNUP_ENABLED', true),
   isProd: process.env.NODE_ENV === 'production',
 };

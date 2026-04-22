@@ -31,6 +31,15 @@ function populatedNetworkName(networkId: unknown): string | null {
   return null;
 }
 
+function populatedNetworkId(networkId: unknown): string | null {
+  if (networkId == null) return null;
+  if (typeof networkId === 'object' && networkId !== null && '_id' in networkId) {
+    return (networkId as { _id: mongoose.Types.ObjectId })._id.toString();
+  }
+  if (networkId instanceof mongoose.Types.ObjectId) return networkId.toString();
+  return null;
+}
+
 function toUserResponse(doc: {
   _id: mongoose.Types.ObjectId;
   username: string;
@@ -94,8 +103,10 @@ export async function getUserById(id: string) {
   if (!user) throw HttpError.notFound('User');
 
   const permissionIds = (user as { permissionIds?: string[] }).permissionIds ?? [];
+  const u = user as { networkId?: unknown };
   return {
     ...toUserResponse(user as unknown as Parameters<typeof toUserResponse>[0]),
+    networkId: populatedNetworkId(u.networkId),
     enabledPermissionIds: permissionIds,
   };
 }
