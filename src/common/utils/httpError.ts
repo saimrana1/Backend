@@ -21,6 +21,10 @@ export class HttpError extends Error {
     return new HttpError(HttpStatus.UNAUTHORIZED, message, { code: 'UNAUTHORIZED' });
   }
 
+  static forbidden(message = 'Forbidden') {
+    return new HttpError(HttpStatus.FORBIDDEN, message, { code: 'FORBIDDEN' });
+  }
+
   static notFound(resource: string) {
     return new HttpError(HttpStatus.NOT_FOUND, `${resource} not found`, { code: 'NOT_FOUND' });
   }
