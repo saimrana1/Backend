@@ -9,6 +9,8 @@ export async function connectMongo(): Promise<void> {
   mongoose.set('strictQuery', true);
   await mongoose.connect(env.mongodbUri);
   connected = true;
+  const safeUri = env.mongodbUri.replace(/\/\/([^:]+):([^@]+)@/, '//$1:****@');
+  console.log(`[mongo] Connected → ${safeUri}`);
 }
 
 export async function disconnectMongo(): Promise<void> {
