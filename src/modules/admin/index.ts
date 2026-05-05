@@ -10,6 +10,7 @@ import { couponsRouter } from './coupons/coupons.routes';
 import { dealsRouter } from './deals/deals.routes';
 import { mediaRouter } from './media/media.routes';
 import { toolsRouter } from './tools/tools.routes';
+import { cashbackAdminRouter } from './cashback/cashback.routes';
 
 export const adminRouter = Router();
 
@@ -25,3 +26,4 @@ adminRouter.use('/coupons', couponsRouter);
 adminRouter.use('/deals', dealsRouter);
 adminRouter.use('/media', mediaRouter);
 adminRouter.use('/tools', toolsRouter);
+adminRouter.use('/', cashbackAdminRouter);
